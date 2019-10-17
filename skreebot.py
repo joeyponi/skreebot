@@ -48,14 +48,14 @@ async def bat(ctx,*,user_search_string=''):
         search_string += '(explicit || questionable || suggestive)'
     else:
         search_string += 'safe'
-    
+
     # Add user search
     if(len(user_search_string) > 0):
         search_string += ',' + user_search_string
-    
+
     # Generate random seed for search
     random_seed = str(random.randint(100000,999999))
-    
+
     # Generate the search url
     search_url = 'https://derpibooru.org/search.json?key=' + config['derpikey'] + '&perpage=1&sf=random:' + random_seed + '&q=' + urllib.parse.quote(search_string)
 
