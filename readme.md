@@ -1,10 +1,10 @@
 # SkreeBot
-A batpony bot that does batpony things
+A bat pony bot that does bat pony things
 
 ## Features
 Skrees a lot
 Reacts with bat emojis
-Can search for batpony pics using the !bat command
+Can search for bat pony pics using the !bat command
 
 ## Dependencies
 - Python 3
