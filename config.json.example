@@ -1,4 +1,5 @@
 {
     "token": "BOT TOKEN GOES HERE",
-    "derpikey": "DERPIBOORU API KEY GOES HERE"
+    "derpikey": "DERPIBOORU API KEY GOES HERE",
+    "runmode": "run"
 }

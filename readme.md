@@ -8,7 +8,6 @@ Can search for bat pony pics using the !bat command
 
 ## Dependencies
 - Python 3
-- DerPyBooru
 - Requests
 - Discord.py
 
@@ -16,10 +15,11 @@ Can search for bat pony pics using the !bat command
 Install the dependencies
 
     $ pip install requests
-    $ pip install derpybooru
     $ pip install discord.py
 
 Move/copy config.json.example to config.json, then add your Discord App's token and Derpibooru API key (for filtering purposes)
+
+If testing, change "runmode" to "test" in config.json, this will allow you to use the !stop command to (usually) shutdown the bot quickly
 
 Run the bot
 

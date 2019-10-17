@@ -2,7 +2,7 @@
 import discord
 import json
 import random
-from derpibooru import Search, sort
+import urllib
 from discord.ext import commands
 
 # Load config
@@ -38,12 +38,37 @@ async def on_message(message):
     await bot.process_commands(message)
 
 # Search for a bat
-@bot.command()
-async def bat(ctx):
+@bot.command(pass_context=True)
+async def bat(ctx,*,user_search_string=''):
+    # Define base search string
+    search_string = 'bat pony,'
+
+    # Add ratings to search string
     if ctx.channel.is_nsfw():
-        await ctx.send('lewd bat!')
+        search_string += '(explicit || questionable || suggestive)'
     else:
-        await ctx.send('bat!')
+        search_string += 'safe'
+    
+    # Add user search
+    if(len(user_search_string) > 0):
+        search_string += ',' + user_search_string
+    
+    # Generate random seed for search
+    random_seed = str(random.randint(100000,999999))
+    
+    # Generate the search url
+    search_url = 'https://derpibooru.org/search.json?key=' + config['derpikey'] + '&perpage=1&sf=random:' + random_seed + '&q=' + urllib.parse.quote(search_string)
+
+    # Get result
+    search_response = urllib.request.urlopen(search_url).read()
+    search_data = json.loads(search_response)
+
+    # Output result (or fail if no result)
+    try:
+        search_result = "https://derpibooru.org/" + str(search_data['search'][0]['id'])
+        await ctx.send(search_result)
+    except IndexError:
+        await ctx.send("No result found. Sad skree :(")
 
 # Bot info
 @bot.command()
@@ -63,6 +88,12 @@ async def help(ctx):
     embed.add_field(name='!help', value='Shows this help dialog.', inline=False)
     embed.add_field(name='Bat Noises', value='This bot likes bat noises. Making them may entice a reaction.', inline=False)
     await ctx.send(embed=embed)
+
+# Stop command
+if(config['runmode'] == 'test'):
+    @bot.command()
+    async def stop(ctx):
+        exit()
 
 # Run the bot
 bot.run(config['token'])
