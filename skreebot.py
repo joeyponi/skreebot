@@ -44,7 +44,7 @@ async def bat(ctx,*,user_search_string=''):
     search_string = 'bat pony,'
 
     # Add ratings to search string
-    if ctx.channel.is_nsfw():
+    if (ctx.channel.is_nsfw()) and ("safe" not in user_search_string.lower()):
         search_string += '(explicit || questionable || suggestive)'
     else:
         search_string += 'safe'
