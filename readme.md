@@ -2,9 +2,9 @@
 A bat pony bot that does bat pony things
 
 ## Features
-Skrees a lot
-Reacts with bat emojis
-Can search for bat pony pics using the !bat command
+- Skrees a lot
+- Reacts with bat emojis
+- Can search for bat pony pics using the !bat command
 
 ## Dependencies
 - Python 3
