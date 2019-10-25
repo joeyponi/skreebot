@@ -27,13 +27,19 @@ async def on_message(message):
         return
 
     # Respond to skrees
-    if "skree" in message.content.lower():
+    if 'skree' in message.content.lower():
         emoji = '\N{Bat}'
         await message.add_reaction(emoji)
 
     # Respond to long skree
-    if "skreeee" in message.content.lower():
+    longskree_list = ['skreeee','eeeeee']
+    if any(ls in message.content.lower() for ls in longskree_list):
         await message.channel.send(random.choice(bat_noises))
+
+    # Respond to being called a good bat
+    if 'good bat' in message.content.lower():
+        emoji = '\N{Heavy Black Heart}'
+        await message.add_reaction(emoji)
 
     # Process commands
     await bot.process_commands(message)
