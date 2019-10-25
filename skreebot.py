@@ -4,6 +4,7 @@ import json
 import random
 import urllib
 from discord.ext import commands
+from discord.ext.commands import CommandNotFound
 
 # Load config
 config = json.load(open('config.json'))
@@ -88,6 +89,13 @@ async def help(ctx):
     embed.add_field(name='!help', value='Shows this help dialog.', inline=False)
     embed.add_field(name='Bat Noises', value='This bot likes bat noises. Making them may entice a reaction.', inline=False)
     await ctx.send(embed=embed)
+
+# Ignore commands from other bots (don't show error)
+@bot.event
+async def on_command_error(ctx, error):
+    if isinstance(error, CommandNotFound):
+        return
+    raise error
 
 # Stop command
 if(config['runmode'] == 'test'):
