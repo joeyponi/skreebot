@@ -3,6 +3,7 @@ import discord
 import json
 import random
 import urllib
+import time
 from discord.ext import commands
 from discord.ext.commands import CommandNotFound
 
@@ -19,6 +20,14 @@ bat_noises = [
 # Create the bot instance
 bot = commands.Bot(command_prefix='!')
 
+# Startup events
+@bot.event
+async def on_ready():
+    # Bot coming online
+    logevent('Skreebot starting up. Skreeeeee!')
+    for guild in bot.guilds:
+        logevent('Connected to server: ' + guild.name)
+
 # Respond to messages that contain skrees
 @bot.event
 async def on_message(message):
@@ -30,16 +39,19 @@ async def on_message(message):
     if 'skree' in message.content.lower():
         emoji = '\N{Bat}'
         await message.add_reaction(emoji)
+        loginteract(message,'Skree!')
 
     # Respond to long skree
     longskree_list = ['skreeee','eeeeee']
     if any(ls in message.content.lower() for ls in longskree_list):
         await message.channel.send(random.choice(bat_noises))
+        loginteract(message,'Eeeeeeeeeeeeeeeee!')
 
     # Respond to being called a good bat
     if 'good bat' in message.content.lower():
         emoji = '\N{Heavy Black Heart}'
         await message.add_reaction(emoji)
+        loginteract(message,'Got called a good bat <3')
 
     # Process commands
     await bot.process_commands(message)
@@ -74,8 +86,10 @@ async def bat(ctx,*,user_search_string=''):
     try:
         search_result = 'https://derpibooru.org/' + str(search_data['images'][0]['id'])
         await ctx.send(search_result)
+        loginteract(ctx,'Searched for \'' + search_string + '\' and returned ' + search_result)
     except IndexError:
         await ctx.send('No result found. Sad skree :(')
+        loginteract(ctx,'Searched for \'' + search_string + '\' but found no results.')
 
 # Bot info
 @bot.command()
@@ -84,6 +98,7 @@ async def info(ctx):
     embed.add_field(name='Author', value='Joey')
     embed.add_field(name='Server Count', value=f'{len(bot.guilds)}')
     await ctx.send(embed=embed)
+    loginteract(ctx,'Displayed info box.')
 
 # Bot help
 bot.remove_command('help')
@@ -95,6 +110,7 @@ async def help(ctx):
     embed.add_field(name='!help', value='Shows this help dialog.', inline=False)
     embed.add_field(name='Bat Noises', value='This bot likes bat noises. Making them may entice a reaction.', inline=False)
     await ctx.send(embed=embed)
+    loginteract(ctx,'Displayed help box.')
 
 # Ignore commands from other bots (don't show error)
 @bot.event
@@ -107,7 +123,18 @@ async def on_command_error(ctx, error):
 if(config['runmode'] == 'test'):
     @bot.command()
     async def stop(ctx):
+        logevent('Stop command received. Stopping.')
         exit()
+
+# Logging (Events)
+def logevent(str):
+    print('[' + time.strftime('%Y-%m-%d %H:%M:%S') +'] ' + str)
+    return
+
+# Logging (Interactions)
+def loginteract(item,str):
+    print('[' + time.strftime('%Y-%m-%d %H:%M:%S') +'][' + item.guild.name + '][' + item.channel.name +'] ' + str)
+    return
 
 # Run the bot
 bot.run(config['token'])
