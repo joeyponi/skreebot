@@ -51,7 +51,7 @@ async def bat(ctx,*,user_search_string=''):
     search_string = 'bat pony,'
 
     # Add ratings to search string
-    if (ctx.channel.is_nsfw()) and ("safe" not in user_search_string.lower()):
+    if (ctx.channel.is_nsfw()) and ('safe' not in user_search_string.lower()):
         search_string += '(explicit || questionable || suggestive)'
     else:
         search_string += 'safe'
@@ -64,7 +64,7 @@ async def bat(ctx,*,user_search_string=''):
     random_seed = str(random.randint(100000,999999))
 
     # Generate the search url
-    search_url = 'https://derpibooru.org/search.json?key=' + config['derpikey'] + '&perpage=1&sf=random:' + random_seed + '&q=' + urllib.parse.quote(search_string)
+    search_url = 'https://derpibooru.org/api/v1/json/search/images?key=' + config['derpikey'] + '&perpage=1&sf=random:' + random_seed + '&q=' + urllib.parse.quote(search_string)
 
     # Get result
     search_response = urllib.request.urlopen(search_url).read()
@@ -72,10 +72,10 @@ async def bat(ctx,*,user_search_string=''):
 
     # Output result (or fail if no result)
     try:
-        search_result = "https://derpibooru.org/" + str(search_data['search'][0]['id'])
+        search_result = 'https://derpibooru.org/' + str(search_data['images'][0]['id'])
         await ctx.send(search_result)
     except IndexError:
-        await ctx.send("No result found. Sad skree :(")
+        await ctx.send('No result found. Sad skree :(')
 
 # Bot info
 @bot.command()
