@@ -78,8 +78,11 @@ async def bat(ctx,*,user_search_string=''):
     # Generate the search url
     search_url = 'https://derpibooru.org/api/v1/json/search/images?key=' + config['derpikey'] + '&perpage=1&sf=random:' + random_seed + '&q=' + urllib.parse.quote(search_string)
 
+    # Generate search request
+    search_request = urllib.request.Request(search_url,data=None,headers={'User-Agent': 'Skreebot Bat Posting Bot'})
+
     # Get result
-    search_response = urllib.request.urlopen(search_url).read()
+    search_response = urllib.request.urlopen(search_request).read()
     search_data = json.loads(search_response)
 
     # Output result (or fail if no result)
