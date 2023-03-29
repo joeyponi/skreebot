@@ -18,7 +18,7 @@ bat_noises = [
 ]
 
 # Create the bot instance
-bot = commands.Bot(command_prefix='!')
+bot = commands.Bot(command_prefix='!',intents=discord.Intents(messages=True, message_content=True, guilds=True))
 
 # Startup events
 @bot.event
